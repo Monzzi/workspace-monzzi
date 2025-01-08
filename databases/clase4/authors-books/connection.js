@@ -13,6 +13,3 @@ const sequelize = new Sequelize(database, username, password, {
 module.exports = {
   sequelize,
 };
-
-// este javascript es el mismo que hacer el comando psql -Upostgres nombre-database
-

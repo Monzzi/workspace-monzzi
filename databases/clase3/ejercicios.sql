@@ -25,7 +25,7 @@ create table libros(
 
  --Ejercicio2
 
- create table libros(
+ create table libros1(
   codigo SERIAL,
   titulo varchar(40) not null,
   autor varchar(20) default 'Desconocido',
@@ -46,14 +46,14 @@ create table libros(
   fechadevolucion date,
   primary key (codigolibro,fechaprestamo)
  );
- 
- 
+
+
  insert into socios values('22333444','Juan Perez','Colon 345');
  insert into socios values('23333444','Luis Lopez','Caseros 940');
  insert into socios values('25333444','Ana Herrero','Sucre 120');
- insert into libros (titulo, autor) values('Manual de 2º grado','Molina Manuel');
- insert into libros (titulo, autor) values('Aprenda PHP','Oscar Mendez');
- insert into libros (titulo, autor) values('Martin Fierro','Jose Hernandez');
+ insert into libros1 (titulo, autor) values('Manual de 2º grado','Molina Manuel');
+ insert into libros1 (titulo, autor) values('Aprenda PHP','Oscar Mendez');
+ insert into libros1 (titulo, autor) values('Martin Fierro','Jose Hernandez');
  insert into prestamos values('22333444',1,'2016-08-10','2016-08-12');
  insert into prestamos values('22333444',1,'2016-08-15',null);
  insert into prestamos values('25333444',2,'2016-08-10','2016-08-13');
