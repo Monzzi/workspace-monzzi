@@ -1,7 +1,7 @@
 {
-  "name": "class1",
+  "name": "base",
   "version": "1.0.0",
-  "description": "My first node app",
+  "description": "My base project",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -16,6 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^8.5.1",
     "mustache-express": "^1.3.2"
   },
   "devDependencies": {
