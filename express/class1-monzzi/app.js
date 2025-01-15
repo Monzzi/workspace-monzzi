@@ -49,3 +49,4 @@ app.get("/user", (req, res) => {
     // Se escribe la URL para el acceso al servidor
     console.log(`Example server listening on http://localhost:${port}`);
   });
+  

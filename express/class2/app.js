@@ -5,23 +5,21 @@ const app = express();
 // Declaro el puerto de escucha
 const port = 3000;
 
-// Middlewares de aplicación
+// Middlewares de aplicación general
 // La función se ejecuta cada vez que la aplicación recibe una solicitud.
 app.use((req, res, next) => {
   console.log("Time:", Date.now());
   next();
 });
 
-// La función se ejecuta para cualquier tipo de solicitud HTTP en ruta /user/:id.
+// Middleware para una ruta especifica: La función se ejecuta para cualquier tipo de solicitud HTTP en ruta /user/:id.
 app.use("/user/:id", (req, res, next) => {
   console.log("Request Type:", req.method);
   next();
 });
 
 // Subpila de middleware que imprime información de solicitud para cualquier tipo de solicitud HTTP en la ruta /user/:id.
-app.use(
-  "/user/:id",
-  (req, res, next) => {
+app.use("/user/:id", (req, res, next) => {
     console.log("Request URL:", req.originalUrl);
     next();
   },
@@ -33,7 +31,7 @@ app.use(
 
 // La función maneja las solicitudes GET a la ruta /user/:id.
 app.get("/user/:id", (req, res, next) => {
-  res.send("USER ID: " + req.params.id);
+  res.send("USER: " + req.params.id);
 });
 
 // Desde la consola ejecutar:
@@ -98,6 +96,17 @@ app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: false }));
 // Defino la ruta que se llamará cuando se reciba una petición HTTP POST
+// Ejercicio clase 2 1.
+app.post("/json", express.json(), (req, res) => {
+  if (req.body.title) {
+    res.send(req.body.title);
+  } else {
+    res.send("El campo title no existe en el cuerpo json");
+  }
+});
+
+
+
 // en la dirección '/user'
 app.post("/user", (req, res) => {
   // Imprime por consola el tipo del body y el body parseado
