@@ -3,7 +3,6 @@
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
-
 module.exports = {
 
   development: {
@@ -11,11 +10,14 @@ module.exports = {
     connection: {
       database: 'express-db-knex',
       user: 'postgres',
-      password: '1234'
+      password: '1234',
     },
+
+
     pool: {
       min: 0,
-      max: 5
+      max: 5,
     },
-    },
-    };
+  },
+
+};

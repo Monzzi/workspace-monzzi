@@ -1,9 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mustacheExpress = require('mustache-express');
-
 const app = express();
-
 const port = 3000;
 
 // Método res.download: Ruta para descargar un archivo
