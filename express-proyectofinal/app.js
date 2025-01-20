@@ -16,9 +16,9 @@ app.get('/', (req, res) => {
 const usersRouter = require('./routes/users');
 app.use('/api/users', usersRouter);
 
-// // Punto 3. Rutas CRUD para el modelo Teacher
-// const teachersRouter = require('./routes/teachers');
-// app.use('/api/teachers', teachersRouter);
+// Punto 3. Rutas CRUD para el modelo Teacher
+const teachersRouter = require('./routes/teachers');
+app.use('/api/teachers', teachersRouter);
 
 // // Punto 3. Rutas CRUD para el modelo Student
 // const studentsRouter = require('./routes/students');
