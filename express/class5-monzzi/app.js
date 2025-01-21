@@ -65,7 +65,6 @@ app.get('/students/:id', async (req, res) => {
   if (isNaN(id)) {
     return res.status(400).json({ message: 'ID must be a number' });
   }
-
   try {
     const student = await students.getById(id); // Llama a la función getById
     if (student) {

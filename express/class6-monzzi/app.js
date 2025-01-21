@@ -91,10 +91,10 @@ app.get('/sessions/delete', (req, res) => {
 
 // JWT
 // Declaramos una clave para firmar el token y verificarlo y creamos ruta para obtener el token
-const JTW_SECRET = 'ClaveUltraSecreta';
+const JWT_SECRET = 'ClaveUltraSecreta';
 app.get('/jwt/set', (req, res) => {
   const token = jwt.sign({ data: 'jwt value' },
-    JTW_SECRET, {
+    JWT_SECRET, {
       expiresIn: '5m',
     });
     res.json({ token: token });
@@ -109,16 +109,17 @@ app.get('/jwt/set', (req, res) => {
   }
 
   let authorization = req.headers.authorization;
-  let token = authorization.split(' ')[1];
+  let token = authorization.split("")[1];
   let jwtdata;
   try {
-    jwtdata = jwt.verify(token, JTW_SECRET);
-  } catch (err) {
+    jwtdata = jwt.verify(token, JWT_SECRET);
+  } catch (error) {
+    console.log(error);
     return res.status(401).json({
       message: 'Invalid token',
     });
   }
-  req.data = jwtdata.data;
+  req.data = jwtData.data;
   next();
   };
 

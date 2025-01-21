@@ -20,22 +20,11 @@ app.use('/api/users', usersRouter);
 const teachersRouter = require('./routes/teachers');
 app.use('/api/teachers', teachersRouter);
 
+
+
 // // Punto 3. Rutas CRUD para el modelo Student
-// const studentsRouter = require('./routes/students');
-// app.use('/api/students', studentsRouter);
-
-
-
-
-// Levantar el servidor y conectarse a la base de datos.
-db.sequelize.sync()
-  .then(() => {
-    console.log('Models synchronized successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to synchronize models:', err);
-  });
-
+const studentsRouter = require('./routes/students');
+app.use('/api/students', studentsRouter);
 
 
 app.listen(PORT, () => {
