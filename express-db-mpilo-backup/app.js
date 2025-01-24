@@ -1,56 +1,56 @@
 require('dotenv').config();
 const express = require('express');
+const db = require('./models');
 const mustacheExpress = require('mustache-express');
 const path = require('path');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const db = require('./models');
 const { User, Teacher } = require('./models');
 const { isAuthenticated, isAdmin } = require('./middlewares/auth');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware global (Relacionado con el punto 3: Middleware para manejar datos JSON y formularios)
+// Middleware
 app.use(express.json()); // Parsear JSON
-app.use(express.urlencoded({ extended: true })); // Manejar datos enviados desde formularios
 
-// Configuración de sesiones (Relacionado con el punto 7: Gestión de sesiones para login/logout)
+// Configurar sesiones
 app.use(session({
   secret: 'clau_molt_secreta',
   resave: false,
   saveUninitialized: false,
 }));
 
-// Configuración del motor de vistas (Relacionado con el punto 7: Renderización de plantillas)
+// Configurar el motor de plantillas Mustache
 app.engine('html', mustacheExpress());
 app.set('view engine', 'html');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views')); // Carpeta de vistas
 
-// Servir archivos estáticos (Relacionado con el punto 7: CSS y recursos estáticos para vistas)
+// Servir archivos estáticos como CSS e imágenes
 app.use(express.static(path.join(__dirname, 'public')));
+// Middleware para manejar datos enviados desde formularios
+app.use(express.urlencoded({ extended: true }));
 
-// Importar rutas (Relacionado con el punto 3: Rutas para CRUD de users, teachers, students)
+// Rutas
 const usersRouter = require('./routes/users');
 const teachersRouter = require('./routes/teachers');
 const studentsRouter = require('./routes/students');
 
-// Rutas inicial con mensaje de saludo.
+// Ruta de prueba inicial
 app.get('/', (req, res) => {
-  res.send('¡Bienvenid@ a la API del proyecto final de Express de Montse Pilo!');
+  res.send('¡Bienvenido a la API del proyecto final!');
 });
 
-app.use('/api/users', usersRouter); // Punto 3: CRUD para usuarios
-app.use('/api/teachers', teachersRouter); // Punto 3: CRUD para profesores
-app.use('/api/students', studentsRouter); // Punto 3: CRUD para estudiantes
+// // Añadir las rutas de usuarios, profesores y estudiantes
+app.use('/api/users', usersRouter);
+app.use('/api/teachers', teachersRouter);
+app.use('/api/students', studentsRouter);
 
-// Ruta para renderizar la vista de login (Relacionado con el punto 7: GET /login)
 app.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login'); // busca y renderiza el archivo login.html
 });
 
-// Manejo del login (Relacionado con el punto 8: POST /login para iniciar sesión)
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -59,85 +59,96 @@ app.post('/login', async (req, res) => {
   }
 
   try {
+    // Buscar al usuario con su profesor asociado
     const user = await User.findOne({
       where: { email: username },
-      include: { model: Teacher, as: 'teacher' },
+      include: { model: Teacher, as: 'teacher' }, // Incluimos el modelo Teacher
     });
 
     if (!user) {
       return res.render('error-login', { message: 'Usuario no encontrado' });
     }
 
+    // Verificar la contraseña
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
       return res.render('error-login', { message: 'Contraseña incorrecta' });
     }
 
-    // Crear sesión
+    // Crear sesión con el nombre del profesor, si existe
     req.session.isLoggedIn = true;
     req.session.user = {
       id: user.id,
       email: user.email,
       type: user.type,
       active: user.active,
-      name: user.teacher ? user.teacher.name : 'Usuario sin nombre',
+      name: user.teacher ? user.teacher.name : 'Usuario sin nombre', // Usamos el nombre del profesor
     };
+
+    console.log('La sesión ha sido creada:', req.session);
 
     return res.redirect('/home');
   } catch (error) {
+    console.error(`[ERROR] ${error.message}`);
     res.status(500).send('Error en el servidor');
   }
 });
 
-// Cerrar sesión (Relacionado con el punto 11: POST /logout para eliminar sesión)
+
 app.post('/logout', (req, res) => {
+  // acabar la session
   req.session.destroy((err) => {
     if (err) {
-      return res.status(500).send('Error al cerrar la sesión');
+      console.error(`[ERROR] ${err.message}`);
+      res.status(500).send('Error al cerrar la sesión');
     }
     res.redirect('/login');
   });
 });
 
-// Ruta del home (Relacionado con el punto 10: GET /home muestra contenido según tipo de usuario)
 app.get('/home', isAuthenticated, (req, res) => {
   const user = req.session.user;
   if (user.type === 'admin') {
     return res.redirect('/users');
   }
+  console.log('usuario logueado:', user);
   res.render('home', { user });
 });
 
-// Ruta para listar usuarios (Relacionado con el punto 9: GET /users protegido para usuarios admin)
 app.get('/users', isAuthenticated, isAdmin, async (req, res) => {
   try {
     const users = await User.findAll({
       attributes: ['id', 'email', 'type', 'active'],
     });
+    console.log('users:', users);
+
     res.render('users', { users });
   } catch (error) {
+    console.error(`[ERROR] ${error.message}`);
     res.status(500).send('Error al cargar los usuarios');
   }
 });
 
-// Generar token JWT (Relacionado con el punto 12: POST /api/token para autenticación con JWT)
-// eslint-disable-next-line consistent-return
 app.post('/api/token', async (req, res) => {
   const { username, password } = req.body;
+
   try {
+    // verificar si el usuario existe
     const user = await User.findOne({ where: { email: username } });
 
     if (!user) {
       return res.status(401).json({ error: 'Usuario no encontrado' });
     }
 
+    // verificar si la contraseña es correcta
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
-      return res.status(401).json({ error: 'Contraseña incorrecta' });
+      return res.status(401).json({ error: 'Contraseña incorrecta' });
     }
 
+    // generar el token
     const token = jwt.sign(
       { email: user.email },
       'clau_molt_secreta',
@@ -146,18 +157,19 @@ app.post('/api/token', async (req, res) => {
 
     res.json({ token });
   } catch (error) {
+    console.error(`[ERROR] ${error.message}`);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
 
-// Manejo de errores para rutas no definidas
-
-app.use((req, res) => {
+// Manejo de rutas no definidas (404)
+app.use((req, res, next) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });
 
 // Manejo de errores global
 app.use((err, req, res, next) => {
+  console.log(`[ERROR] ${err.message}`);
   res.status(500).json({ error: 'Error interno del servidor' });
 });
 

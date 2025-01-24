@@ -30,7 +30,7 @@ module.exports = {
         allowNull: false,
         unique: true,
         references: {
-          model: 'users',
+          model: 'users', // nombre de la tabla de referencias 1:1
           key: 'id',
         },
         onUpdate: 'CASCADE',

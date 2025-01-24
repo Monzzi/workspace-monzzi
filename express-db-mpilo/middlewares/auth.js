@@ -1,27 +1,34 @@
 // Middlewares relacionados con autenticación y autorización
 
+/**
+ * Middleware para verificar si el usuario está autenticado.
+ * Si la sesión existe, permite continuar; de lo contrario, redirige al login.
+ */
 function isAuthenticated(req, res, next) {
-  // verificar si la sessión del usuario existe
   if (req.session && req.session.isLoggedIn) {
-    return next(); // si la sessión existe, continuar con la solicitud
+    return next(); // Si la sesión del usuario está activa
   }
 
-  // si la sessión no existe, redirigir al login
+  // Si no hay sesión, redirigir al login
   res.redirect('/login');
-  }
+}
 
-
+/**
+ * Middleware para verificar si el usuario es administrador.
+ * Si el usuario es de tipo 'admin', permite continuar.
+ * Si el usuario es de otro tipo (por ejemplo, 'user'), lo redirige a su perfil en /home.
+ */
 function isAdmin(req, res, next) {
-  // verificar si el usuario es del tipo "admin"
-  if (req.session.user && req.session.user.type === 'admin') {
-    return next(); // si el usuario es admin, continuar con la solicitud
+  if (req.session.user) {
+    if (req.session.user.type === 'admin') {
+      return next(); // Si el usuario tiene permisos de administrador
+    }
+    // Si el usuario es de otro tipo, redirigir a su perfil
+    return res.redirect('/home');
   }
+}
 
-  // si el usuario no es admin, redirigir al inicio
-  res.status(401).send('Acceso denegado');
-  }
-
-  module.exports = {
-    isAuthenticated,
-    isAdmin,
-  };
+module.exports = {
+  isAuthenticated,
+  isAdmin,
+};

@@ -11,7 +11,7 @@ module.exports = {
       bcrypt.hash('teacherPass789', 10), // Contraseña para el segundo profesor
     ]);
 
-    // Insertar primeros datos en la tabla 'users'
+    // Insertar datos en la tabla 'users'
     await queryInterface.bulkInsert('users', [
       {
         email: 'admin@example.com',
