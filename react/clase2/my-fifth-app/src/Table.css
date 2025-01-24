@@ -1,0 +1,21 @@
+/* Table.css */
+.table-bordered {
+  border: 3px double black; /* Borde doble negro externo */
+  border-collapse: collapse; /* Une los bordes */
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 3px double violet; /* Bordes internos dobles y violetas */
+  padding: 8px; /* Espaciado interno */
+  text-align: left; /* Alineación de texto */
+}
+
+.table-bordered th {
+  background-color: #f3e5f5; /* Fondo violeta claro para la cabecera */
+  color: #4a148c; /* Texto violeta oscuro */
+}
+
+.table-bordered td {
+  background-color: #f8f5f9; /* Fondo violeta más claro para celdas */
+}

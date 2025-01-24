@@ -18,6 +18,7 @@
     "jest-environment-jsdom": "^29.7.0"
   },
   "dependencies": {
+    "@testing-library/react": "^16.2.0",
     "eslint-plugin-jest": "^28.8.3",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
