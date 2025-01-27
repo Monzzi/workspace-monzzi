@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "./Table";
-import Table2 from "./Table2";
+
 
 
 class App extends React.Component {
@@ -18,7 +18,6 @@ class App extends React.Component {
       <h1>My Fifth App. Hello World!!</h1>
       <div className="container">
         <Table peopleData={people} title={title} /> {/* Tabla con datos dinamicos. */}
-        <Table2 /> {/* Tabla con datos hardcodeados. */}
       </div>
       </>
     );
