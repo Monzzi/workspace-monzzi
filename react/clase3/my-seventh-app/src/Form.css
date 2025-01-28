@@ -1,0 +1,7 @@
+form {
+  display: flex;
+  flex-direction: flex-start;
+  align-items: left;
+  justify-content: left;
+  flex-wrap: wrap;
+}
