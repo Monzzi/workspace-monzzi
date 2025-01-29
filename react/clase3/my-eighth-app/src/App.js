@@ -36,8 +36,4 @@ const App = () => {
   return <Clock />
 };
 
-
-
-
-
 export default App;

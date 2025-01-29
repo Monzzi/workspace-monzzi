@@ -22,7 +22,7 @@ import './App.css';
 
 
 
-// Prop drilling o perforación de props. Eliminamos una capa. Descomentar.
+// Prop drilling o perforación de props. Eliminamos una capa.
 const App = () => {
   const userName = "Joe";
   return (
