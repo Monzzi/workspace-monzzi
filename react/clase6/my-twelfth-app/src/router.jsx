@@ -22,42 +22,58 @@
 //   )
 // );
 
-// DIAPO 5 CLASE 6
+// // DIAPO 5 CLASE 6
+// import { createBrowserRouter } from 'react-router-dom';
+// import PublicLayout from './routes/publicLayout';
+
+// const router = createBrowserRouter([
+//   {
+//     path: '/',
+//     element: <root />,
+//     errorElement: <errorPage />,
+//     loader: rootLoader,
+//     action: rootAction,
+//     children: [
+//       {
+//         errorElement: <errorPage />,
+//         children: [
+//           { index: true, element: <Index /> },
+//           {
+//             path: 'contacts/contactId',
+//             element: <Contact />,
+//             loader: contactLoader,
+//             action: contactAction,
+//           },
+//           {
+//             path: 'contacts/:contactId/edit',
+//             element: <EditContact />,
+//             loader: contactLoader,
+//             action: EditAction,
+//           },
+//           {
+//             path: 'contacts/:contactId/destroy',
+//             action: destroyAction,
+//             errorElement: <div>Oops! There was an error.</div>,
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ]);
+
+// Código final DIAPO 7.
 import { createBrowserRouter } from 'react-router-dom';
-import Clock from './routes/Clock';
-import People from './routes/People';
+import PublicLayout from './routes/PublicLayout';
+import Clock from './routes/Clock'; // Este se trae de my-eighth-functional
+import TableUsers from './routes/TableUsers'; // Se renombra desde my-seventh-app
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <root />,
-    errorElement: <errorPage />,
-    loader: rootLoader,
-    action: rootAction,
+    element: <PublicLayout />,
     children: [
-      {
-        errorElement: <errorPage />,
-        children: [
-          { index: true, element: <Index /> },
-          {
-            path: 'contacts/contactId',
-            element: <Contact />,
-            loader: contactLoader,
-            action: contactAction,
-          },
-          {
-            path: 'contacts/:contactId/edit',
-            element: <EditContact />,
-            loader: contactLoader,
-            action: EditAction,
-          },
-          {
-            path: 'contacts/:contactId/destroy',
-            action: destroyAction,
-            errorElement: <div>Oops! There was an error.</div>,
-          },
-        ],
-      },
+      { path: 'clock', element: <Clock /> },
+      { path: 'people', element: <TableUsers /> },
     ],
   },
 ]);

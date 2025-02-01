@@ -1,8 +1,10 @@
-function PublicLayout() {
+import { Outlet } from 'react-router-dom';
+
+export default function PublicLayout() {
   return (
     <>
       <div id="sidebar">
-        <hi>React Router Veridas</hi>
+        <hi>React Router Monzzi</hi>
         <nav>
           <ul>
             <li>
@@ -14,9 +16,9 @@ function PublicLayout() {
           </ul>
         </nav>
       </div>
-      <div id="detail">[AQUÍ SE DEBEN RENDERIZAR LOS HIJOS]</div>
+      <div id="detail">
+        <Outlet />
+      </div>
     </>
   );
 }
-
-export default PublicLayout;
