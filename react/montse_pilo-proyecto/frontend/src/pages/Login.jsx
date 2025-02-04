@@ -37,7 +37,7 @@ const Login = () => {
         role: decoded.type || decoded.role, // ✅ Actualizamos `setUser` inmediatamente
       });
 
-      navigate('/dashboard'); // ✅ Redirigimos al usuario
+      navigate('/profile'); // ✅ Redirigimos al usuario
     } catch (err) {
       console.error('Error en login:', err);
       setError('Credenciales incorrectas');

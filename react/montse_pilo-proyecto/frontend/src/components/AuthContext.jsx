@@ -16,11 +16,17 @@ export const AuthProvider = ({ children }) => {
       try {
         const decoded = jwtDecode(token);
         console.log('[INFO] Token decodificado:', decoded); // control.
-        setUser({
-          // Guardamos la información del usuario
+        const newUser = {
+          id: decoded.userId,
           email: decoded.email,
           role: decoded.type || decoded.role,
-        });
+          teacherId: decoded.teacherId,
+        };
+        
+        console.log('[DEBUG] Usuario que se guardará en AuthContext:', newUser);
+        setUser(newUser);
+        
+
       } catch (error) {
         console.error('Error al decodificar el token:', error);
         localStorage.removeItem('token');
@@ -30,6 +36,10 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log('[DEBUG] user actualizado en AuthContext:', user);
+  }, [user]);
+  
   const logout = () => {
     localStorage.removeItem('token');
     setUser(null);

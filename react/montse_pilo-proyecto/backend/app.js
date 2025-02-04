@@ -139,6 +139,7 @@ app.post('/api/token', async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: 'Usuario no encontrado' });
     }
+    console.log(`[INFO] Datos del usuario:`, user.toJSON());
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     console.log(`[INFO] Contraseña válida: ${isValidPassword}`);
@@ -147,18 +148,33 @@ app.post('/api/token', async (req, res) => {
       return res.status(401).json({ error: 'Contraseña incorrecta' });
     }
 
+    let teacherId = null;
+    if (user.type === 'user') { // 🔹 Si es profesor, buscamos su `id` en `teachers`
+      const teacher = await Teacher.findOne({ where: { user_id: user.id } });
+      if (!teacher) {
+        console.log(`[WARNING] No se encontró teacherId para el usuario ${user.email}`);
+      }
+
+      teacherId = teacher ? teacher.id : null;
+    }
+
+    console.log(`[INFO] teacherId asignado: ${teacherId}`);
+
     const token = jwt.sign(
-      { email: user.email, type: user.type },
+      {
+        userId: user.id, // 🔹 ID en la tabla `users`
+        email: user.email,
+        type: user.type,
+        teacherId, // 🔹 Ahora `teacherId` se obtiene correctamente
+      },
       'clau_molt_secreta', // Recuerda usar un archivo .env para esta clave
       { expiresIn: '20m' },
     );
-    console.log('[INFO] Token generado correctamente');
 
+    console.log('[INFO] Token generado correctamente:', token);
     res.json({ token });
   } catch (error) {
-    console.log(
-      `[ERROR] Ha ocurrido un problema en /api/token: ${error.message}`,
-    );
+    console.log(`[ERROR] Ha ocurrido un problema en /api/token: ${error.message}`);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
