@@ -1,17 +1,17 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 
-export default function PublicLayout() {
+function PublicLayout() {
   return (
     <>
       <div id="sidebar">
-        <hi>React Router Monzzi</hi>
+        <hi>React Router Monzzi CLASE 6</hi>
         <nav>
           <ul>
             <li>
-              <a href={'/clock'}>Clock</a>
+              <Link to={'/clock'}>Clock</Link>
             </li>
             <li>
-              <a href={'/people'}>People</a>
+              <Link to={'/people'}>People</Link>
             </li>
           </ul>
         </nav>
@@ -22,3 +22,5 @@ export default function PublicLayout() {
     </>
   );
 }
+
+export default PublicLayout;

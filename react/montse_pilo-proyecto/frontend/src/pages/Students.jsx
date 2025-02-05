@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../components/AuthContext';
+import StudentDelete from '../components/StudentDelete';
 
 const Students = () => {
   const { user } = useAuth();
@@ -43,6 +44,11 @@ const Students = () => {
     fetchStudents();
   }, [user]);
 
+  // función para actualizar la lista de estudiantes después de eliminar uno
+  const removeStudentFromList = (studentId) => {
+    setStudents(students.filter((s) => s.id !== studentId));
+  };
+
   if (isLoading) {
     return <p>Cargando...</p>;
   }
@@ -57,13 +63,18 @@ const Students = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <ul>
         {students.length > 0 ? (
-          students.map((s) => <li key={s.id}>{s.name} {s.last_name} --- DNI: {s.dni}</li>)
+          students.map((s) => (
+            <div key={s.id}>
+              {/* <li>{s.name} {s.last_name} --- DNI: {s.dni}</li> */}
+              <StudentDelete student={s} onDelete={removeStudentFromList} />
+            </div>
+          ))
         ) : (
           <p>No hay estudiantes asignados.</p>
         )}
       </ul>
     </div>
-  );
+);
 };
 
 export default Students;
