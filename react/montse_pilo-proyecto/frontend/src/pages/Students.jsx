@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../components/AuthContext';
 import StudentDelete from '../components/StudentDelete';
+import AddStudent from '../components/AddStudent';  
 
 const Students = () => {
   const { user } = useAuth();
@@ -49,6 +50,11 @@ const Students = () => {
     setStudents(students.filter((s) => s.id !== studentId));
   };
 
+  // función para actualizar lista cuando se agrega un estudiante
+  const addStudentToList = (newStudent) => {
+    setStudents([...students, newStudent]);
+  };
+
   if (isLoading) {
     return <p>Cargando...</p>;
   }
@@ -73,6 +79,8 @@ const Students = () => {
           <p>No hay estudiantes asignados.</p>
         )}
       </ul>
+
+      <AddStudent onStudentAdded={addStudentToList} />
     </div>
 );
 };

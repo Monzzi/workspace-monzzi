@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import Users from './pages/Users';
 import Students from './pages/Students';
 import ProtectedRoute from './components/ProtectedRoute';
+import Signup from './pages/Signup';
 import './index.css';
 
 
@@ -32,6 +33,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route index element={<Students />} />
             </Route>
 
+            <Route path="signup" element={<Signup />} />
+            
           </Route>
         </Routes>
       </AuthProvider>

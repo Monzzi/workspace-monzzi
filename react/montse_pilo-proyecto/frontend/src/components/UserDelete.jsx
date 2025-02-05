@@ -2,18 +2,18 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const UserDelete = ({ user, onDelete }) => {
+    const [error, setError] = useState('');
+
     if (!user || !user.id) {
         console.error("❌ Error: user no está definido o no tiene ID.");
         return null;  // 🔥 Evitamos que el componente crashee si `user` no está definido.
     }
-        const [error, setError] = useState('');
     
-        const handleDelete = async () => {
+    const handleDelete = async () => {
             if (!window.confirm('¿Seguro que quieres eliminar este usuario?')) {
                 return;
             }
             console.log('Iniciando eliminación del usuario:', user.id);
-
 
         try {
             const response = await fetch(
@@ -22,9 +22,11 @@ const UserDelete = ({ user, onDelete }) => {
                     method: 'DELETE',
                     headers: { 
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                        'Content-Type': 'application/json'
+                        // 'Content-Type': 'application/json'
                     }
-                }
+                },
+                console.log('ID del usuario a eliminar:', user.id)
+
             );
 
             console.log('Respuesta del servidor:', response.status);
@@ -32,7 +34,9 @@ const UserDelete = ({ user, onDelete }) => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al eliminar el usuario'); 
+                alert(`No se puede eliminar este usuario, porque tiene un profesor asociado.`);
+                throw new Error(errorData.message || 'Error al eliminar el usuario.'); 
+
             }
             
             console.log('Usuario eliminado exitosamente');
@@ -40,7 +44,6 @@ const UserDelete = ({ user, onDelete }) => {
             onDelete(user.id);  // ✅ Actualiza la lista sin recargar la página
         } catch (error) {
             setError(error.message);
-            console.error("[ERROR] Error al eliminar usuario:", error.message);
         }
     };
 
@@ -56,7 +59,6 @@ const UserDelete = ({ user, onDelete }) => {
         </span>
     );
 };
-
 UserDelete.propTypes = {
     user: PropTypes.shape({
         id: PropTypes.string.isRequired,

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import UserDelete from '../components/UserDelete';
 
 const Users = () => {
+    const navigate = useNavigate();
     const { user } = useAuth();
     const [users, setUsers] = useState([]);
     const [error, setError] = useState('');
@@ -64,6 +66,11 @@ const Users = () => {
                     <p>No hay usuarios</p>
                 )}
             </ul>
+            
+            <button onClick={() => {
+                console.log('[DEBUG] Redirigiendo a /signup');
+                navigate('/signup');
+            }}>Crear usuario</button>
         </div>
     );
 };
