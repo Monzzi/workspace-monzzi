@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const StudentDelete = ({ student, Ondelete }) => {
+const StudentDelete = ({ student, onDelete }) => {
     const [error, setError] = useState('');
 
     const handleDelete = async () => {
@@ -23,7 +23,7 @@ const StudentDelete = ({ student, Ondelete }) => {
                 throw new Error('Error al eliminar el estudiante');
             }
 
-            Ondelete(student.id);
+            onDelete(student.id);
 
         } catch (error) {
             setError(error.message);
@@ -45,7 +45,7 @@ StudentDelete.propTypes = {
         last_name: PropTypes.string.isRequired,
         dni: PropTypes.string.isRequired,
     }).isRequired,
-    Ondelete: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
 };
 
 export default StudentDelete;

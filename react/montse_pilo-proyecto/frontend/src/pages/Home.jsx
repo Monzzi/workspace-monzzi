@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import '../index.css';
+import './styles/Home.css';
 
 const Home = () => {
   const navigate = useNavigate(); // Hook para navegar

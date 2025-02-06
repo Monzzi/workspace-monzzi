@@ -30,15 +30,19 @@ const Users = () => {
     }, [user]);
 
     const removeUserFromList = (userId) => {
-      console.log('Intentando eliminar usuario con ID:', userId);
-      console.log('Lista actual de usuarios:', users);
-      setUsers(users.filter(user => {
-          console.log('Comparando:', user.id, userId, user.id !== userId);
-          return user.id !== userId
-      }));
-      console.log('Nueva lista de usuarios:', users.filter(user => user.id !== userId));
-  };
-
+        setUsers(prevUsers => {
+            const updatedUsers = prevUsers.filter(user => String(user.id) !== String(userId));
+            console.log('✅ Lista de usuarios después de eliminar:', updatedUsers);
+            return [...updatedUsers];  // Creamos un nuevo array para asegurar la actualización
+        });
+    
+        setTimeout(() => {
+            console.log("🔥 Estado actualizado después de 100ms:", users);
+        }, 100);
+    };
+    
+    
+    
     if (!user || user.role !== 'admin') {
         return <h1>Acceso no autorizado</h1>;
     }

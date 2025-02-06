@@ -24,9 +24,7 @@ const UserDelete = ({ user, onDelete }) => {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                         // 'Content-Type': 'application/json'
                     }
-                },
-                console.log('ID del usuario a eliminar:', user.id)
-
+                }
             );
 
             console.log('Respuesta del servidor:', response.status);
@@ -40,6 +38,9 @@ const UserDelete = ({ user, onDelete }) => {
             }
             
             console.log('Usuario eliminado exitosamente');
+
+
+            console.log("Llamando a onDelete con ID:", user.id);
 
             onDelete(user.id);  // ✅ Actualiza la lista sin recargar la página
         } catch (error) {
