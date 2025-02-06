@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../components/AuthContext'; // ✅ Importamos el contexto
 import { jwtDecode } from 'jwt-decode';
+// import './styles/Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -62,7 +63,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Iniciar sesión</button>
+        <button className='login' type="submit">Iniciar sesión</button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
