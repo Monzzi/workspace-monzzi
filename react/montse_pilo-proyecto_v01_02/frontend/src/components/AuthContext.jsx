@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
@@ -7,7 +7,6 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isInitializing, setIsInitializing] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const initializeAuth = () => {
@@ -46,20 +45,20 @@ export const AuthProvider = ({ children }) => {
         console.error('[ERROR] Error al inicializar la autenticación:', error);
         localStorage.removeItem('token');
         setUser(null);
-        navigate('/login');
+        window.location.href = "/login";  // ✅ SOLUCIÓN: Usa `window.location.href`
       } finally {
         setIsInitializing(false);
       }
     };
 
     initializeAuth();
-  }, [navigate]);
+  }, []);
 
   const logout = () => {
     console.log('[INFO] Cerrando sesión');
     localStorage.removeItem('token');
     setUser(null);
-    navigate('/login');
+    window.location.href = "/login";  // 🔥 Redirige usando `window.location.href`
   };
 
   const login = (token) => {
@@ -98,11 +97,8 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth debe ser usado dentro de un AuthProvider');
-  }
-  return context;
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
+
+export default AuthContext;

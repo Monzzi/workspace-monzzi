@@ -6,7 +6,7 @@ const Sidebar = () => {
 
   // Si el usuario no está definido, mostramos un mensaje
   if (!user) {
-    return <p className="sidebar-loading">Cargando menú...</p>;
+    return null;
   }
 
   return (

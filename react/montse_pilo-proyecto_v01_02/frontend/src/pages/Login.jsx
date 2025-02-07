@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../components/AuthContext'; // ✅ Importamos el contexto
 import { jwtDecode } from 'jwt-decode';
-// import './styles/Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
