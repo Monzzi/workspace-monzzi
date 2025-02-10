@@ -1,3 +1,4 @@
+// pages/Students.jsx
 import { useState, useEffect } from 'react';
 import { useAuth } from '../components/AuthContext';
 import StudentDelete from '../components/StudentDelete';
@@ -20,9 +21,7 @@ const Students = () => {
         const response = await fetch(
           `http://localhost:3000/api/teachers/${user.teacherId}/students`, 
           {
-            headers: { 
-              Authorization: `Bearer ${localStorage.getItem('token')}` 
-            },
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
           }
         );
 
@@ -31,11 +30,10 @@ const Students = () => {
         }
 
         const data = await response.json();
-        console.log('[DEBUG] Respuesta del backend (students):', data);
         setStudents(data);
         setError('');
       } catch (err) {
-        console.error('[ERROR] Error al obtener estudiantes:', err);
+        console.error('Error al obtener estudiantes:', err);
         setError(err.message);
       } finally {
         setIsLoading(false);
@@ -45,44 +43,51 @@ const Students = () => {
     fetchStudents();
   }, [user]);
 
-  // función para actualizar la lista de estudiantes después de eliminar uno
-  const removeStudentFromList = (studentId) => {
-    setStudents(students.filter((s) => s.id !== studentId));
+  const handleStudentDeleted = (studentId) => {
+    setStudents(currentStudents => 
+      currentStudents.filter(student => student.id !== studentId)
+    );
   };
 
-  // función para actualizar lista cuando se agrega un estudiante
-  const addStudentToList = (newStudent) => {
-    setStudents([...students, newStudent]);
+  const handleStudentAdded = (newStudent) => {
+    setStudents(currentStudents => [...currentStudents, newStudent]);
   };
 
   if (isLoading) {
-    return <p>Cargando...</p>;
+    return <div className="loading-message">Cargando estudiantes...</div>;
   }
 
   if (!user || user.role !== 'user') {
-    return <p>No tienes permiso para ver esta página.</p>;
+    return <div className="error-message">No tienes permiso para ver esta página.</div>;
   }
 
   return (
-    <div>
-      <h2>Lista de Estudiantes</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <ul>
+    <div className="students-container">
+      <div className="students-header">
+        <h2 className="students-title">Gestión de Estudiantes</h2>
+      </div>
+
+      {error && <div className="error-message">{error}</div>}
+
+      <div className="students-list">
         {students.length > 0 ? (
-          students.map((s) => (
-            <div key={s.id}>
-              {/* <li>{s.name} {s.last_name} --- DNI: {s.dni}</li> */}
-              <StudentDelete student={s} onDelete={removeStudentFromList} />
-            </div>
+          students.map((student) => (
+            <StudentDelete 
+              key={student.id}
+              student={student}
+              onDelete={handleStudentDeleted}
+            />
           ))
         ) : (
-          <p>No hay estudiantes asignados.</p>
+          <p className="empty-message">No hay estudiantes asignados.</p>
         )}
-      </ul>
+      </div>
 
-      <AddStudent onStudentAdded={addStudentToList} />
+      <div className="add-student-section">
+        <AddStudent onStudentAdded={handleStudentAdded} />
+      </div>
     </div>
-);
+  );
 };
 
 export default Students;

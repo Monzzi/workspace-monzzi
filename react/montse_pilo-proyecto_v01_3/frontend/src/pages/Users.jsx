@@ -2,16 +2,14 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../components/AuthContext';
 import UserDelete from '../components/UserDelete';
+import UserStatus from '../components/UserStatus';
 
 const Users = () => {
     const { user } = useAuth();
     const [users, setUsers] = useState([]);
     const [error, setError] = useState('');
 
-    // Función para cargar usuarios
     const loadUsers = async () => {
-        console.log('🔄 Cargando usuarios...');
-
         try {
             const response = await fetch('http://localhost:3000/api/users', {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -21,30 +19,28 @@ const Users = () => {
                 throw new Error('Error al obtener el listado de usuarios');
             }
             const data = await response.json();
-            console.log('📥 Usuarios cargados:', data);
-
             setUsers(data);
         } catch (err) {
-            console.error('❌ Error cargando usuarios:', err);
-
             setError(err.message);
         }
     };
 
-    // Cargar usuarios al montar el componente
     useEffect(() => {
         if (!user || user.role !== 'admin') return;
         loadUsers();
     }, [user]);
 
-    // Función para manejar la eliminación
     const handleUserDeleted = (userId) => {
-        console.log('🗑️ Manejando eliminación de usuario:', userId);
+        setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+    };
 
-        // convertimos useriD a número para la comparación
-        const userIdNum = Number(userId);
-        setUsers(prevUsers => prevUsers.filter(u => u.id !== userIdNum));
-        };
+    const handleStatusChange = (updatedUser) => {
+        setUsers(prevUsers => 
+            prevUsers.map(u => 
+                u.id === updatedUser.id ? updatedUser : u
+            )
+        );
+    };
 
     if (!user || user.role !== 'admin') {
         return <h1>Acceso no autorizado</h1>;
@@ -68,17 +64,24 @@ const Users = () => {
                                     Rol: {u.type === 'admin' ? 'Administrador' : 'Profesor'}
                                 </div>
                             </div>
-                            <div className={`user-status ${u.active ? 'active' : 'inactive'}`}>
-                                {u.active ? 'Activo' : 'Inactivo'}
+                            
+                            <div className="user-actions">
+                                <UserStatus 
+                                    user={{
+                                        id: String(u.id),
+                                        active: !!u.active
+                                    }}
+                                    onStatusChange={(updatedUser) => handleStatusChange(updatedUser)}
+                                />
+                                <UserDelete 
+                                    user={{
+                                        id: String(u.id),
+                                        email: u.email,
+                                        type: u.type
+                                    }} 
+                                    onDelete={handleUserDeleted}
+                                />
                             </div>
-                            <UserDelete 
-                                user={{
-                                    id: String(u.id),
-                                    email: u.email,
-                                    type: u.type
-                                }} 
-                                onDelete={handleUserDeleted}
-                            />
                         </div>
                     ))
                 ) : (

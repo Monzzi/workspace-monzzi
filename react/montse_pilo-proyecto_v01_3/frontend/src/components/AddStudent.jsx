@@ -1,3 +1,4 @@
+// components/AddStudent.jsx
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useAuth } from '../components/AuthContext';
@@ -55,7 +56,7 @@ const AddStudent = ({ onStudentAdded }) => {
             setName('');
             setLastName('');
             setDateOfBirth('');
-            onStudentAdded(createdStudent); // Actualizar la lista de estudiantes
+            onStudentAdded(createdStudent);
 
         } catch (error) {
             setError(error.message);
@@ -65,39 +66,42 @@ const AddStudent = ({ onStudentAdded }) => {
     return (
         <div className="add-student">
             <h3>Agregar nuevo estudiante</h3>
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+            {error && <div className="error-message">{error}</div>}
+            {successMessage && <div className="success-message">{successMessage}</div>}
 
             <form onSubmit={handleSubmit}>
                 <label>
-                    DNI:
+                    DNI
                     <input
                         type="text"
                         value={dni}
                         onChange={(e) => setDni(e.target.value)}
+                        placeholder="12345678X"
                         required
                     />
                 </label>
                 <label>
-                    Nombre:
+                    Nombre
                     <input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        placeholder="Nombre del estudiante"
                         required
                     />
                 </label>
                 <label>
-                    Apellido:
+                    Apellidos
                     <input
                         type="text"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
+                        placeholder="Apellidos del estudiante"
                         required
                     />
                 </label>
                 <label>
-                    Fecha de nacimiento:
+                    Fecha de nacimiento
                     <input
                         type="date"
                         value={dateOfBirth}
@@ -110,6 +114,7 @@ const AddStudent = ({ onStudentAdded }) => {
         </div>
     );
 };
+
 AddStudent.propTypes = {
     onStudentAdded: PropTypes.func.isRequired,
 };
