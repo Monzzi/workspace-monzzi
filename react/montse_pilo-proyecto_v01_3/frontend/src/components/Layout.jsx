@@ -1,6 +1,7 @@
 // components/Layout.jsx
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import Footer from '../pages/Footer';
 
 const Layout = () => {
   return (
@@ -9,6 +10,7 @@ const Layout = () => {
       <div id="detail">
         <Outlet />
       </div>
+      <Footer />
     </div>
   );
 };

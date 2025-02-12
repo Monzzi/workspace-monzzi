@@ -31,7 +31,7 @@ const Users = () => {
     }, [user]);
 
     const handleUserDeleted = (userId) => {
-        setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+        setUsers(prevUsers => prevUsers.filter(u => Number(u.id) !== userId));
     };
 
     const handleStatusChange = (updatedUser) => {

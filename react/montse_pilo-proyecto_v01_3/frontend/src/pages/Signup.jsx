@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/AuthContext";  // ✅ Importamos el contexto de autenticación
+import { validateDNI } from "../utils/validateDNI";
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -31,6 +32,14 @@ const Signup = () => {
         e.preventDefault();
         setError("");
         setSuccessMessage("");
+
+        if (type === "user") {
+            const dniError = validateDNI(dni);
+            if (dniError) {
+                setError(dniError);
+                return;
+        }
+        }    
 
         if (!email || !password || !type) {
             setError("El email, la contraseña y el tipo de usuario son obligatorios.");
@@ -94,28 +103,35 @@ const Signup = () => {
         }
     };
 
+
     return (
-        <div>
-            <h3>Registro de Usuario</h3>
+        <div className="add-student">
+            <h3 className="add-student">Registro de Usuario</h3>
             {error && <p style={{ color: "red" }}>{error}</p>}
             {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
 
             <form onSubmit={handleSubmit}>
-                <label>Email:<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required /></label><br />
-                <label>Contraseña:<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required /></label><br />
+                <label>Email:<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required /></label>
+                <label>Contraseña:<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required /></label>
                 <label>Tipo de usuario:
                     <select value={type} onChange={(e) => setType(e.target.value)}>
                         <option value="user">Profesor</option>
                         <option value="admin">Admin</option>
                     </select>
-                </label><br />
+                </label>
 
                 {type === "user" && (
                     <>
-                        <label>DNI:<input type="text" value={dni} onChange={(e) => setDni(e.target.value)} required /></label><br />
-                        <label>Nombre:<input type="text" value={name} onChange={(e) => setName(e.target.value)} required /></label><br />
-                        <label>Apellido:<input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required /></label><br />
-                        <label>Fecha de nacimiento:<input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} required /></label><br />
+                        <label>DNI:<input 
+                                type="text" 
+                                value={dni} 
+                                onChange={(e) => setDni(e.target.value.toUpperCase())}
+                                placeholder="12345678A"
+                                maxLength="9"
+                                required /></label>
+                        <label>Nombre:<input type="text" value={name} onChange={(e) => setName(e.target.value)} required /></label>
+                        <label>Apellidos:<input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required /></label>
+                        <label>Fecha de nacimiento:<input type="date" value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} required /></label>
                     </>
                 )}
                 <button type="submit">Registrar</button>

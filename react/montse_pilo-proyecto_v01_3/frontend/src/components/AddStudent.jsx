@@ -2,6 +2,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useAuth } from '../components/AuthContext';
+import { validateDNI } from '../utils/validateDNI'; 
 
 const AddStudent = ({ onStudentAdded }) => {
     const { user } = useAuth();
@@ -26,6 +27,13 @@ const AddStudent = ({ onStudentAdded }) => {
             setError("Error: No se encontró el ID del profesor.");
             return;
         }
+
+        const dniError = validateDNI(dni);
+        if (dniError) {
+            setError(dniError);
+            return;
+        }
+
 
         const newStudent = {
             dni,
@@ -75,8 +83,9 @@ const AddStudent = ({ onStudentAdded }) => {
                     <input
                         type="text"
                         value={dni}
-                        onChange={(e) => setDni(e.target.value)}
+                        onChange={(e) => setDni(e.target.value.toUpperCase())}
                         placeholder="12345678X"
+                        maxLength={9}
                         required
                     />
                 </label>

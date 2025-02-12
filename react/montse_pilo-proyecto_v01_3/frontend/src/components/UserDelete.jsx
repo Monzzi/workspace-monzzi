@@ -78,16 +78,34 @@ const UserDelete = ({ user, onDelete }) => {
         if (!window.confirm('¿Seguro que quieres eliminar este usuario?')) {
             return;
         }
-
+    
         setIsDeleting(true);
         setError('');
-
+    
         try {
+            // Primero verificamos si el usuario está activo
+            const userResponse = await fetch(
+                `http://localhost:3000/api/users/${user.id}`,
+                {
+                    headers: { 
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
+    
+            const userData = await userResponse.json();
+            
+            // Si el usuario está inactivo, mostramos el mensaje y detenemos el proceso
+            if (!userData.active) {
+                setError('El usuario debe estar activo para poder ser eliminado. Por favor, actívelo primero.');
+                return;
+            }
+    
             // Si es profesor, primero intentar eliminar el profesor
             if (user.type === 'user') {
                 await deleteTeacher(user.id);
             }
-
+    
             // Si llegamos aquí, podemos eliminar el usuario
             const response = await fetch(
                 `http://localhost:3000/api/users/${user.id}`,
@@ -98,12 +116,12 @@ const UserDelete = ({ user, onDelete }) => {
                     }
                 }
             );
-
+    
             if (!response.ok) {
                 throw new Error('Error al eliminar el usuario');
             }
-
-            onDelete(user.id);
+    
+            onDelete(Number(user.id));
         } catch (error) {
             setError(error.message);
         } finally {
