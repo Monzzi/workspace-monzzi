@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../components/AuthContext';
 import StudentDelete from '../components/StudentDelete';
-import AddStudent from '../components/AddStudent';  
+import AddStudent from '../components/AddStudent';
 
 const Students = () => {
   const { user } = useAuth();
@@ -19,10 +19,12 @@ const Students = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/api/teachers/${user.teacherId}/students`, 
+          `http://localhost:3000/api/teachers/${user.teacherId}/students`,
           {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-          }
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          },
         );
 
         if (!response.ok) {
@@ -44,13 +46,13 @@ const Students = () => {
   }, [user]);
 
   const handleStudentDeleted = (studentId) => {
-    setStudents(currentStudents => 
-      currentStudents.filter(student => student.id !== studentId)
+    setStudents((currentStudents) =>
+      currentStudents.filter((student) => student.id !== studentId),
     );
   };
 
   const handleStudentAdded = (newStudent) => {
-    setStudents(currentStudents => [...currentStudents, newStudent]);
+    setStudents((currentStudents) => [...currentStudents, newStudent]);
   };
 
   if (isLoading) {
@@ -58,7 +60,11 @@ const Students = () => {
   }
 
   if (!user || user.role !== 'user') {
-    return <div className="error-message">No tienes permiso para ver esta página.</div>;
+    return (
+      <div className="error-message">
+        No tienes permiso para ver esta página.
+      </div>
+    );
   }
 
   return (
@@ -72,7 +78,7 @@ const Students = () => {
       <div className="students-list">
         {students.length > 0 ? (
           students.map((student) => (
-            <StudentDelete 
+            <StudentDelete
               key={student.id}
               student={student}
               onDelete={handleStudentDeleted}

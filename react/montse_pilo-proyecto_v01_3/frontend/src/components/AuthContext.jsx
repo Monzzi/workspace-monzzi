@@ -9,12 +9,14 @@ export const AuthProvider = ({ children }) => {
   const [isInitializing, setIsInitializing] = useState(true);
   const navigate = useNavigate();
 
-    // Inicializa la autenticación al cargar la aplicación
+  // Inicializa la autenticación al cargar la aplicación
   useEffect(() => {
     const initializeAuth = () => {
       const token = localStorage.getItem('token');
-      console.log('[INFO] Inicializando autenticación. Token presente:', !!token);
-
+      console.log(
+        '[INFO] Inicializando autenticación. Token presente:',
+        !!token,
+      );
 
       if (!token) {
         setIsInitializing(false);
@@ -24,7 +26,6 @@ export const AuthProvider = ({ children }) => {
       try {
         const decoded = jwtDecode(token);
         console.log('[INFO] Token decodificado:', decoded);
-
 
         // Validar que el token tiene la información necesaria
         if (!decoded.userId || !decoded.email) {
@@ -93,18 +94,14 @@ export const AuthProvider = ({ children }) => {
     setUser,
     logout,
     login,
-    isInitializing
+    isInitializing,
   };
 
   if (isInitializing) {
     return null; // O un componente de loading si lo prefieres
   }
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

@@ -1,10 +1,10 @@
-import { useAuth } from "../components/AuthContext";
+import { useAuth } from '../components/AuthContext';
 
 const Profile = () => {
   const { user } = useAuth();
 
   if (!user) {
-    return <p className='propile-loading'>Cargando tu perfil...</p>;
+    return <p className="propile-loading">Cargando tu perfil...</p>;
   }
 
   // función para obtener el texto del rol del usuario
@@ -13,14 +13,17 @@ const Profile = () => {
   };
 
   // función para obtener el texto según el rol del usuario
-
   const getRoleMessage = (role) => {
     if (role === 'admin') {
-      return "Como administrador, tienes acceso a la gestión de usuarios y profesores. " +
-             "Puedes crear nuevos usuarios, asignar roles y gestionar el sistema.";
+      return (
+        'Como administrador, tienes acceso a la gestión de usuarios y profesores. ' +
+        'Puedes crear nuevos usuarios, asignar roles y gestionar el sistema.'
+      );
     }
-    return "Como profesor, puedes gestionar tu lista de estudiantes y ver su información. " +
-           "Accede a 'Mis Estudiantes' en el menú lateral para ver y administrar tu clase.";
+    return (
+      'Como profesor, puedes gestionar tu lista de estudiantes y ver su información. ' +
+      "Accede a 'Mis Estudiantes' en el menú lateral para ver y administrar tu clase."
+    );
   };
 
   return (

@@ -17,7 +17,7 @@ const Login = () => {
     setError('');
     setIsLoading(true);
 
-  // Validación básica
+    // Validación básica
     if (!email || !password) {
       setError('Por favor, completa todos los campos');
       setIsLoading(false);
@@ -45,8 +45,8 @@ const Login = () => {
     } catch (err) {
       console.error('Error en login:', err);
       setError(
-        err.response?.data?.message || 
-        'Error al iniciar sesión. Por favor, verifica tus credenciales.'
+        err.response?.data?.message ||
+          'Error al iniciar sesión. Por favor, verifica tus credenciales.',
       );
     } finally {
       setIsLoading(false);
@@ -56,12 +56,12 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-container">
-        <img 
-          src="/coding.png" 
-          alt="Logo de la aplicación" 
+        <img
+          src="/coding.png"
+          alt="Logo de la aplicación"
           className="login-logo"
         />
-        
+
         <div className="login-title">
           <h2>¡Bienvenido/a!</h2>
           <p>Inicia sesión para acceder a tu panel</p>
@@ -94,11 +94,7 @@ const Login = () => {
 
           {error && <div className="error-message">{error}</div>}
 
-          <button 
-            type="submit" 
-            className="login-button" 
-            disabled={isLoading}
-          >
+          <button type="submit" className="login-button" disabled={isLoading}>
             {isLoading ? (
               <>
                 <span className="spinner"></span>
