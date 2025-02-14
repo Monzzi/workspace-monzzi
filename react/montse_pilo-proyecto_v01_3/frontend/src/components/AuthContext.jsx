@@ -2,14 +2,14 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
-const AuthContext = createContext();
+const AuthContext = createContext(); // Creamos el contexto de autenticación
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [user, setUser] = useState(null); // Estado para almacenar el usuario autenticado
+  const [isInitializing, setIsInitializing] = useState(true); // Estado para saber si estamos inicializando
   const navigate = useNavigate();
 
-  // Inicializa la autenticación al cargar la aplicación
+  // useEffect para inicializar la autenticación cuando se carga la aplicación
   useEffect(() => {
     const initializeAuth = () => {
       const token = localStorage.getItem('token');
@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const decoded = jwtDecode(token);
+        const decoded = jwtDecode(token); // Decodificar el token
         console.log('[INFO] Token decodificado:', decoded);
 
         // Validar que el token tiene la información necesaria
@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, [navigate]);
 
+  // Funciones para cerrar sesión
   const logout = () => {
     console.log('[INFO] Cerrando sesión');
     localStorage.removeItem('token');
@@ -68,6 +69,7 @@ export const AuthProvider = ({ children }) => {
     navigate('/login');
   };
 
+  // Función para iniciar sesión
   const login = (token) => {
     try {
       localStorage.setItem('token', token);
@@ -89,6 +91,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Objeto con los valores que proporciona el contexto de autenticación
   const value = {
     user,
     setUser,
@@ -104,6 +107,7 @@ export const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
+// Hook para acceder al contexto de autenticación
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

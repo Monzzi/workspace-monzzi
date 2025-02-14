@@ -1,7 +1,7 @@
-// components/Layout.jsx
+// Componente Layout de la app
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import Footer from '../pages/Footer';
+import Footer from '../components/Footer';
 
 const Layout = () => {
   return (

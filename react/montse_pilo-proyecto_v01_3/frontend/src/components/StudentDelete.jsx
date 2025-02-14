@@ -1,4 +1,7 @@
-// components/StudentDelete.jsx
+/* Componente para eliminar un estudiante
+ * Este componente muestra la información de un estudiante y permite eliminarlo.
+ * Incluye confirmación antes de eliminar y manejo de estados durante el proceso.
+*/
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -6,12 +9,14 @@ const StudentDelete = ({ student, onDelete }) => {
   const [error, setError] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Función para eliminar un estudiante
   const handleDelete = async () => {
     if (!window.confirm('¿Seguro que quieres eliminar el estudiante?')) {
       return;
     }
 
-    setIsDeleting(true);
+    // Se envía la solicitud para eliminar el estudiante
+    setIsDeleting(true); 
     try {
       const response = await fetch(
         `http://localhost:3000/api/students/${student.id}`,
@@ -33,6 +38,7 @@ const StudentDelete = ({ student, onDelete }) => {
     }
   };
 
+  // Renderizado del componente
   return (
     <div className="student-item">
       <div className="student-info">
@@ -53,14 +59,15 @@ const StudentDelete = ({ student, onDelete }) => {
   );
 };
 
+// Propiedades que recibe el componente
 StudentDelete.propTypes = {
   student: PropTypes.shape({
-    id: PropTypes.number.isRequired, // Cambiado a number
+    id: PropTypes.number.isRequired, 
     name: PropTypes.string.isRequired,
     last_name: PropTypes.string.isRequired,
     dni: PropTypes.string.isRequired,
   }).isRequired,
-  onDelete: PropTypes.func.isRequired, // Corregido a minúscula
+  onDelete: PropTypes.func.isRequired, 
 };
 
 export default StudentDelete;

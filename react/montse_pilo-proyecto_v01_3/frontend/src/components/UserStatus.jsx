@@ -1,7 +1,12 @@
-// components/UserStatus.jsx
+ /* Componente para cambiar el estado activo/inactivo de un usuario
+   * 
+   * Este componente permite alternar el estado de un usuario y 
+   * muestra visualmente si está activo o inactivo
+   */
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
+// Componente para cambiar el estado activo/inactivo de un usuario
 const UserStatus = ({ user, onStatusChange }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState('');

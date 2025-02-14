@@ -1,3 +1,9 @@
+/*Componente para eliminar un usuario 
+ * Este componente es más complejo que StudentDelete porque:
+ * 1. Verifica si el usuario está activo antes de eliminar
+ * 2. Si es profesor, verifica que no tenga estudiantes asignados
+ * 3. Maneja la eliminación en cascada (primero profesor, luego usuario)
+ */
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
