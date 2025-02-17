@@ -1,0 +1,10 @@
+{
+  "name": "montse_pilo-proyecto-final",
+  "version": "1.0.0",
+  "description": "Proyecto Full Stack React + Express",
+  "scripts": {
+    "setup": "chmod +x setup.sh && ./setup.sh",
+    "stop": "chmod +x stop.sh && ./stop.sh"
+  }
+}
+  
