@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Huella de Carbono</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="banner"><h1>Calculadora de Huella de Carbono Turística</h1></div>
+
+    <p>Introduce los datos de tu viaje para calcular tu huella de carbono e hídrica durante tus vacaciones. Te mostraremos recomendaciones en función de tus resultados. Recuerda que el cáluclo es por persona.</p>
+
+    <div class="tabs">
+      <button class="tab-button active" data-tab="transporte">Transporte</button>
+      <button class="tab-button" data-tab="alojamiento">Alojamiento</button>
+      <button class="tab-button" data-tab="actividades">Actividades</button>
+      <button class="tab-button" data-tab="alimentacion">Alimentación</button>
+    </div>
+
+    <form id="carbonForm">
+      <div class="tab-content active" id="transporte">
+        <h2>Transporte</h2>
+        <label for="transportType">Tipo de transporte:</label>
+        <select id="transportType" name="transportType">
+          <option value="avión">Avión</option>
+          <option value="coche_combustión">Coche (Combustión)</option>
+          <option value="coche_eléctrico">Coche (Eléctrico)</option>
+          <option value="tren">Tren</option>
+          <option value="autobús">Autobús</option>
+        </select>
+
+        <label for="transportDistance">Distancia recorrida ida y vuelta (en km):</label>
+        <input type="number" id="transportDistance" name="transportDistance" required>
+
+        <h2>Transporte en el destino</h2>
+        <label for="inBoundtransportType">Tipo de transporte:</label>
+        <select id="inBoundtransportType" name="inBoundtransportType">
+          <option value="coche_combustión">Coche (Combustión)</option>
+          <option value="coche_eléctrico">Coche (Eléctrico)</option>
+          <option value="tren">Tren</option>
+          <option value="autobús">Autobús</option>
+          <option value="bicicleta">Bicicleta o andando</option>
+        </select>
+
+        <label for="inBoundtransportDistance">Distancia recorrida durante la estancia en el destino (en km):</label>
+        <input type="number" id="inBoundtransportDistance" name="inBoundtransportDistance" required>
+      </div>
+
+      <div class="tab-content" id="alojamiento">
+        <h2>Alojamiento</h2>
+        <label for="accommodationType">Tipo de alojamiento:</label>
+        <select id="accommodationType" name="accommodationType">
+          <option value="hotel">Hotel</option>
+          <option value="hostal">Hostal</option>
+          <option value="casa_rural">Casa Rural</option>
+          <option value="camping">Camping</option>
+        </select>
+
+        <label for="nights">Número de noches:</label>
+        <input type="number" id="nights" name="nights" required>
+      </div>
+
+      <div class="tab-content" id="actividades">
+        <h2>Actividades</h2>
+        <label for="activityType">Tipo de actividad:</label>
+        <select id="activityType" name="activityType">
+          <option value="ecoturismo">Ecoturismo</option>
+          <option value="actividad_estandard">Actividad estándar</option>
+        </select>
+
+        <label for="activityHours">Duración de la actividad (en horas):</label>
+        <input type="number" id="activityHours" name="activityHours" required>
+      </div>
+
+      <div class="tab-content" id="alimentacion">
+        <h2>Alimentación</h2>
+        <label for="dietType">Tipo de alimentación:</label>
+        <select id="dietType" name="dietType">
+          <option value="vegetariana">Vegetariana</option>
+          <option value="omnivora">Omnívora</option>
+          <option value="vegana">Vegana</option>
+        </select>
+
+        <label for="mealsPerDay">Número de comidas por día:</label>
+        <input type="number" id="mealsPerDay" name="mealsPerDay" required>
+      </div>
+
+      <button type="submit">Calcular</button>
+    </form>
+
+    <div id="error-container" style="display:none; color:red;"></div>
+
+
+    <div id="resultados" class="resultados">
+      <!-- Los resultados aparecerán aquí dinámicamente -->
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

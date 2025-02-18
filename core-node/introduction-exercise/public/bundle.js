@@ -1,0 +1,1 @@
+(()=>{"use strict";try{window&&alert("Open your development console and check the messages!")}catch(e){console.log("No browser instance detected, alert message is not necessary")}console.log("Adding 5 and 3:",8),console.log("Subtracting 8 from 10:",2),console.log("Multiplying 2 and 4:",8),console.log("Dividing 10 by 2:",5)})();
