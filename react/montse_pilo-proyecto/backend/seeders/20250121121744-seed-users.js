@@ -29,7 +29,7 @@ module.exports = {
         email: 'teacher2@example.com',
         password: hashedPasswords[2],
         type: 'user',
-        active: false,
+        active: true,
       },
     ]);
   },

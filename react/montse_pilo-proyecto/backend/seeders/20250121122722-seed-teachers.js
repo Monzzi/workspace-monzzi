@@ -18,6 +18,13 @@ module.exports = {
         date_of_birth: '1990-05-15',
         user_id: 2,
       },
+      {
+        dni: '52438294B',
+        name: 'Jacky',
+        last_name: 'Brown',
+        date_of_birth: '1980-06-15',
+        user_id: 3,
+      },
     ]);
   },
 
